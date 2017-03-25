@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{F4EB8BCE-AEB7-4ECF-8979-D13AB2BA206A}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Central_Smarthome.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\skripsi-object-master\Object_Simulator.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="Central_Smarthome">
+			<MSBuild Projects="Central_Smarthome.dproj"/>
+		</Target>
+		<Target Name="Central_Smarthome:Clean">
+			<MSBuild Targets="Clean" Projects="Central_Smarthome.dproj"/>
+		</Target>
+		<Target Name="Central_Smarthome:Make">
+			<MSBuild Targets="Make" Projects="Central_Smarthome.dproj"/>
+		</Target>
+		<Target Name="Object_Simulator">
+			<MSBuild Projects="..\skripsi-object-master\Object_Simulator.dproj"/>
+		</Target>
+		<Target Name="Object_Simulator:Clean">
+			<MSBuild Targets="Clean" Projects="..\skripsi-object-master\Object_Simulator.dproj"/>
+		</Target>
+		<Target Name="Object_Simulator:Make">
+			<MSBuild Targets="Make" Projects="..\skripsi-object-master\Object_Simulator.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="Central_Smarthome;Object_Simulator"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="Central_Smarthome:Clean;Object_Simulator:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="Central_Smarthome:Make;Object_Simulator:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
