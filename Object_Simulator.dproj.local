@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/02/08 22:42:44.573.pas,C:\Users\AgungSetiabudi\Documents\RAD Studio\Projects\Unit1.pas=C:\Temp\Object_Simulator\Main.pas</Transaction>
+    <Transaction>2016/02/08 22:42:44.573.dfm,C:\Users\AgungSetiabudi\Documents\RAD Studio\Projects\Unit1.dfm=C:\Temp\Object_Simulator\Main.dfm</Transaction>
+    <Transaction>2016/02/08 22:42:47.295.dproj,C:\Users\AgungSetiabudi\Documents\RAD Studio\Projects\Project1.dproj=C:\Temp\Object_Simulator\Object_Simulator.dproj</Transaction>
+    <Transaction>2017/01/03 10:54:11.982.pas,C:\Users\Student\Documents\RAD Studio\Projects\skripsi\skripsi-object-master\Unit1.pas=C:\Users\Student\Documents\RAD Studio\Projects\skripsi\skripsi-object-master\FdtMdl1.pas</Transaction>
+    <Transaction>2017/01/03 10:54:11.982.dfm,C:\Users\Student\Documents\RAD Studio\Projects\skripsi\skripsi-object-master\Unit1.dfm=C:\Users\Student\Documents\RAD Studio\Projects\skripsi\skripsi-object-master\FdtMdl1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>
