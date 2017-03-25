@@ -78,21 +78,27 @@ begin
           iUsr_idRule := myReg.ReadInteger('SETTINGS', 'USR_ID'+IntToStr(i),0);
           if iObject <> 0 then
           begin
-            //ShowMessage('USR ID '+IntToStr(iUsr_ID));
             if iUsr_ID = iUsr_idRule then
               begin
-                //ShowMessage('USR ID Didalam begin '+IntToStr(iUsr_ID));
                 NextGrid1.AddRow(1);
                 Inc(posisi);
                 NextGrid1.Cell[1, posisi - 1].AsInteger := iObject;
                 NextGrid1.Cell[2, posisi - 1].AsString := myReg.ReadString('SETTINGS', 'name' + IntToStr(i), 'Object_' + IntToStr(i));
                 NextGrid1.Cell[4, posisi - 1].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(i), 0) * NextGrid1.Cell[3, posisi - 1].AsInteger / 100;
                 NextGrid1.Cell[5, posisi - 1].AsString := myReg.ReadString('SETTINGS', 'IP' + IntToStr(i), 'Object_' + IntToStr(i));
-              end;
-            Inc(i);
-          end
-          else
-               __bEof := True;
+              end
+            else if iUsr_ID = 0 then
+              begin
+                NextGrid1.AddRow(1);
+                NextGrid1.Cell[1, i - 1].AsInteger := iObject;
+                NextGrid1.Cell[2, i - 1].AsString := myReg.ReadString('SETTINGS', 'name' + IntToStr(i), 'Object_' + IntToStr(i));
+                NextGrid1.Cell[4, i - 1].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(i), 0) * NextGrid1.Cell[3, i - 1].AsInteger / 100;
+                NextGrid1.Cell[5, i - 1].AsString := myReg.ReadString('SETTINGS', 'IP' + IntToStr(i), 'Object_' + IntToStr(i));
+            end;
+          Inc(i);
+     end
+     else
+        __bEof := True;
      end;
      myReg.Free;
 
