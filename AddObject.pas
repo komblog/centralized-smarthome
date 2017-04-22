@@ -65,6 +65,7 @@ begin
   myObj.WriteString('SETTINGS', 'name'+IntToStr(i+1), editNamaObject.Text);
   myObj.WriteInteger('SETTINGS', 'power'+IntToStr(i+1), StrToInt(editPower.Text));
   myObj.WriteString('SETTINGS', 'IP'+IntToStr(i+1), editIP.Text);
+  myObj.WriteInteger('SETTINGS', 'status'+IntToStr(i+1), 0);
   myObj.WriteInteger('SETTINGS', 'USR_ID'+IntToStr(i+1), formLogin.__iUserID);
   myObj.Free;
 
