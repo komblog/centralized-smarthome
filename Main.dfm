@@ -178,7 +178,7 @@ object formMain: TformMain
     DefaultPort = 16209
     OnDisconnect = IdTCPServer1Disconnect
     OnExecute = IdTCPServer1Execute
-    Left = 48
+    Left = 96
     Top = 536
   end
   object PopupMenu1: TPopupMenu
@@ -188,5 +188,14 @@ object formMain: TformMain
       Caption = 'Refresh'
       OnClick = Refresh2Click
     end
+  end
+  object IdTCPClientUpdate: TIdTCPClient
+    ConnectTimeout = 0
+    Host = 'localhost'
+    IPVersion = Id_IPv4
+    Port = 13550
+    ReadTimeout = 0
+    Left = 376
+    Top = 520
   end
 end

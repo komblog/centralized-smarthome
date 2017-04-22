@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, INIFiles, NxColumnClasses, NxColumns, NxScrollControl,
   NxCustomGridControl, NxCustomGrid, NxGrid, IdContext, IdBaseComponent,
-  IdComponent, IdCustomTCPServer, IdTCPServer, StdCtrls, NxCollection, Menus;
+  IdComponent, IdCustomTCPServer, IdTCPServer, StdCtrls, NxCollection, Menus,
+  IdTCPConnection, IdTCPClient, idSync;
 
 type
   TformMain = class(TForm)
@@ -25,6 +26,7 @@ type
     NxIncrementColumn1: TNxIncrementColumn;
     PopupMenu1: TPopupMenu;
     Refresh2: TMenuItem;
+    IdTCPClientUpdate: TIdTCPClient;
     procedure FormShow(Sender: TObject);
     procedure IdTCPServer1Execute(AContext: TIdContext);
     procedure IdTCPServer1Disconnect(AContext: TIdContext);
@@ -41,7 +43,9 @@ type
     { Public declarations }
     iUsr_ID : Integer;
     __bEof : boolean;
+    isConnect : boolean;
     procedure tampilkanObjek;
+    procedure connect;
   end;
 
 var
@@ -60,6 +64,18 @@ procedure TformMain.FormShow(Sender: TObject);
 
 begin
      //tampilkanObjek;
+end;
+
+procedure TformMain.connect;
+begin
+  //cek apakah sudah terjadi koneksi
+  if not isConnect then
+  begin
+    IdTCPClientUpdate.Port := 13550;
+    IdTCPClientUpdate.Host := 'localhost';
+    IdTCPClientUpdate.Connect;      //connect ke kontrol dan monitoring
+    isConnect := True;
+  end;
 end;
 
 procedure TformMain.tampilkanObjek;
@@ -84,6 +100,7 @@ begin
                 Inc(posisi);
                 NextGrid1.Cell[1, posisi - 1].AsInteger := iObject;
                 NextGrid1.Cell[2, posisi - 1].AsString := myReg.ReadString('SETTINGS', 'name' + IntToStr(i), 'Object_' + IntToStr(i));
+                NextGrid1.Cell[3, posisi - 1].AsInteger := myReg.ReadInteger('SETTINGS', 'status' + IntToStr(i), 0  );
                 NextGrid1.Cell[4, posisi - 1].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(i), 0) * NextGrid1.Cell[3, posisi - 1].AsInteger / 100;
                 NextGrid1.Cell[5, posisi - 1].AsString := myReg.ReadString('SETTINGS', 'IP' + IntToStr(i), 'Object_' + IntToStr(i));
               end
@@ -117,20 +134,21 @@ end;
 procedure TformMain.IdTCPServer1Execute(AContext: TIdContext);
 var
      myReg, myRule : TIniFile;
-     iBaris  : integer;
-     sMsg, sObj_Id, sData : string;
+     iBaris, iNo : integer;
+     sMsg, sObj_Id, sData, sObjek_id, sStatus, sPower : string;
      sRule_Id, sRule_Obj_In, sRule_Obj_In_Name, sRule_Obj_In_Status, sRule_Obj_Out, sRule_Obj_Out_Name, sRule_Obj_Out_Status, sRule_User_Id, sRule_Obj_In_IP, sRule_Obj_Out_IP : string;
      bFound : boolean;
 begin
      myRule := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Rule.ini');
      myReg := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'Settings.ini' );
      sMsg := AContext.Connection.IOHandler.ReadLn;
+     //pengguna login dan menampilkan objek yang dimilikinya
      if Pos('!', sMsg) > 0 then
      begin
           iUsr_ID := StrToInt(Copy(sMsg, pos('@', sMsg) + 1, MaxInt));
-          //ShowMessage('USR ID Setelah login '+IntToStr(iUsr_ID));
           AContext.Connection.IOHandler.WriteLn('OK');
           tampilkanObjek;
+          connect
      end
      else if Pos('@', sMsg) > 0 then
      //menerima rule dari base station
@@ -174,59 +192,48 @@ begin
           end;
           //akhir kode untk menerima rule dari base station
      end
+     else if Pos('#', sMsg) > 0 then
+     //eksekusi rule dari kontrol dan monitoring
+     begin
+          sObj_Id := Copy( sMsg, pos('#', sMsg) + 1, pos('*', sMsg) - (pos('#', sMsg) + 1));
+          sData := Copy( sMsg, pos('*', sMsg) + 1, MaxInt );
+
+          iBaris := 0;
+
+          while not bFound do
+          begin
+              if NextGrid1.Cell[1, iBaris].AsInteger = StrToInt(sObj_Id) then
+              begin
+                  bFound := True;
+                  NextGrid1.Cell[3, iBaris].AsInteger := StrToInt(sdata);
+                  NextGrid1.Cell[4, iBaris].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(iBaris + 1), 0) * NextGrid1.Cell[3, iBaris].AsInteger / 100;
+                  //kirim status terbaru objek ke kontrol dan monitoring
+                  AContext.Connection.IOHandler.WriteLn('#' + sObj_Id + '*' + sData + '&' + NextGrid1.Cell[4, iBaris].AsString);
+              end
+              else
+                  Inc(iBaris);
+          end;
+     end
      else
      begin
-          if Pos('#', sMsg) > 0 then
-          begin
-               sObj_Id := Copy( sMsg, pos('#', sMsg) + 1, pos('*', sMsg) - (pos('#', sMsg) + 1));
-               sData := Copy( sMsg, pos('*', sMsg) + 1, MaxInt );
-
-               iBaris := 0;
-
-               while not bFound do
-               begin
-                    if NextGrid1.Cell[1, iBaris].AsInteger = StrToInt(sObj_Id) then
-                    begin
-                         bFound := True;
-                         NextGrid1.Cell[3, iBaris].AsInteger := StrToInt(sdata);
-                         NextGrid1.Cell[4, iBaris].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(iBaris + 1), 0) * NextGrid1.Cell[3, iBaris].AsInteger / 100;
-                         AContext.Connection.IOHandler.WriteLn('#' + sObj_Id + '*' + sData + '&' + NextGrid1.Cell[4, iBaris].AsString);
-                    end
-                    else
-                         Inc(iBaris);
-               end;
-          end
-          else
-          begin
-               sObj_Id := Copy( sMsg, pos('@', sMsg) + 1, pos('$', sMsg) - (pos('@', sMsg) + 1));
-               sData := Copy( sMsg, pos('$', sMsg) + 1, MaxInt );
-
-               iBaris := 0;
-
-               while not bFound do
-               begin
-                    if NextGrid1.Cell[1, iBaris].AsInteger = StrToInt(sObj_Id) then
-                    begin
-                         bFound := True;
-                         NextGrid1.Cell[3, iBaris].AsInteger := StrToInt(sdata);
-                         NextGrid1.Cell[4, iBaris].AsFloat := myReg.ReadInteger('SETTINGS', 'power' + IntToStr(iBaris + 1), 0) * NextGrid1.Cell[3, iBaris].AsInteger / 100;
-
-                    end
-                    else
-                         Inc(iBaris);
-               end;
-          end;
+        iNo := 0;
+        while iNo < NextGrid1.RowCount do
+        begin
+            sObjek_id := NextGrid1.Cell[1, iNo].AsString;
+            sStatus := NextGrid1.Cell[3, iNo].AsString;
+            sPower := NextGrid1.Cell[4, iNo].AsString;
+            AContext.Connection.IOHandler.WriteLn('@'+ sObjek_id + '#' + sStatus + '$' + sPower);
+        end;
+        Inc(iNo);
      end;
      myRule.Free;
      myReg.Free;
-
-
 end;
 
 procedure TformMain.NextGrid1AfterEdit(Sender: TObject; ACol, ARow: Integer;
   Value: WideString);
 var
-  myRule : TIniFile;
+  myRule, myObject : TIniFile;
   ruleSectionList : TStringList;
   sObj_In_Name, sRule_Id_Obj_Out, sRule_Obj_Out_Status : string;
   iBaris, iNo : Integer;
@@ -234,8 +241,8 @@ var
   i, iObj_in, iObj_in_status : Integer;
 
 begin
-
   myRule := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Rule.ini');
+  myObject := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Settings.ini');
   iBaris := NextGrid1.SelectedRow;
   iObj_in := NextGrid1.Cell[1,iBaris].AsInteger;
   iObj_in_status := NextGrid1.Cell[6,iBaris].AsInteger;
@@ -262,12 +269,15 @@ begin
           sRule_Obj_Out_Status := '0';
         end;
 
+        IdTCPClientUpdate.Socket.WriteLn('!' + sRule_Id_Obj_Out + '@' + sRule_Obj_Out_Status);
+
         iNo := 0;
-        while NextGrid1.Cell[1,iNo].AsInteger < NextGrid1.RowCount do
+        while iNo < NextGrid1.RowCount do
           begin
             if NextGrid1.Cell[1,iNo].AsInteger = StrToInt(sRule_Id_Obj_Out) then
               begin
                 NextGrid1.Cell[3,iNo].AsInteger := StrToInt(sRule_Obj_Out_Status);
+                myObject.WriteInteger('SETTINGS', 'status'+sRule_Id_Obj_Out, 100);
               end;
         Inc(iNo);
         end;
@@ -296,11 +306,12 @@ begin
         end;
 
       iNo := 0;
-        while NextGrid1.Cell[1,iNo].AsInteger < NextGrid1.RowCount do
+        while iNo < NextGrid1.RowCount do
           begin
             if NextGrid1.Cell[1,iNo].AsInteger = StrToInt(sRule_Id_Obj_Out) then
               begin
                 NextGrid1.Cell[3,iNo].AsInteger := StrToInt(sRule_Obj_Out_Status);
+                myObject.WriteInteger('SETTINGS', 'status'+sRule_Id_Obj_Out, 0);
               end;
           Inc(iNo);
         end;
@@ -309,6 +320,7 @@ begin
   end;
 
     NextGrid1.cell[3,iBaris].AsInteger := NextGrid1.Cell[6,iBaris].AsInteger;
+    myObject.WriteInteger('SETTINGS', 'status'+IntToStr(iObj_in), NextGrid1.Cell[6,iBaris].AsInteger);
     myRule.Free;
 end;
 
