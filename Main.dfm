@@ -2,7 +2,7 @@ object formMain: TformMain
   Left = 0
   Top = -55
   Caption = 'Centralized Smarthome'
-  ClientHeight = 710
+  ClientHeight = 721
   ClientWidth = 773
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,21 +21,22 @@ object formMain: TformMain
     Left = 233
     Top = 25
     Width = 1
-    Height = 666
+    Height = 677
     ExplicitHeight = 446
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 691
+    Top = 702
     Width = 773
     Height = 19
     Panels = <>
+    ExplicitTop = 691
   end
   object NxPanelLeft: TNxPanel
     Left = 0
     Top = 25
     Width = 233
-    Height = 666
+    Height = 677
     AdaptiveColors = False
     Align = alLeft
     Caption = 'NxPanelLeft'
@@ -44,20 +45,22 @@ object formMain: TformMain
     PanelBorders = []
     ParentColor = False
     TabOrder = 1
+    ExplicitHeight = 666
     object TreeView1: TTreeView
       Left = 0
       Top = 0
       Width = 233
-      Height = 508
+      Height = 519
       Align = alClient
       Indent = 19
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnDblClick = TreeView1DblClick
+      ExplicitHeight = 508
     end
     object NxFlipPanel1: TNxFlipPanel
       Left = 0
-      Top = 508
+      Top = 519
       Width = 233
       Height = 158
       Align = alBottom
@@ -93,6 +96,7 @@ object formMain: TformMain
       HeaderFont.Height = -11
       HeaderFont.Name = 'Tahoma'
       HeaderFont.Style = []
+      ExplicitTop = 508
       FullHeight = 0
       object NextInspector1: TNextInspector
         Left = 0
@@ -144,7 +148,7 @@ object formMain: TformMain
     Left = 234
     Top = 25
     Width = 539
-    Height = 666
+    Height = 677
     AdaptiveColors = False
     Align = alClient
     Caption = 'NxPanelRight'
@@ -153,6 +157,7 @@ object formMain: TformMain
     PanelBorders = []
     ParentColor = False
     TabOrder = 2
+    ExplicitHeight = 666
     object NxSplitter2: TNxSplitter
       Left = 0
       Top = 177
@@ -277,7 +282,7 @@ object formMain: TformMain
       Left = 0
       Top = 178
       Width = 539
-      Height = 488
+      Height = 499
       Align = alClient
       Caption = '[Object ID] Object Name <ON/OFF>'
       HeaderFont.Charset = DEFAULT_CHARSET
@@ -287,12 +292,13 @@ object formMain: TformMain
       HeaderFont.Style = []
       ParentHeaderFont = False
       TabOrder = 1
+      ExplicitHeight = 488
       FullWidth = 539
       object NxSplitter3: TNxSplitter
         Left = 305
         Top = 27
         Width = 1
-        Height = 459
+        Height = 470
         ExplicitLeft = 241
         ExplicitHeight = 239
       end
@@ -300,13 +306,14 @@ object formMain: TformMain
         Left = 0
         Top = 27
         Width = 305
-        Height = 459
+        Height = 470
         Align = alLeft
         HeaderStyle = hsVista
         Options = [goGrid, goHeader, goSelectFullRow]
         PopupMenu = PopupMenu1
         TabOrder = 0
         TabStop = True
+        ExplicitHeight = 459
         object NxTextColumn5: TNxIncrementColumn
           DefaultWidth = 37
           Font.Charset = DEFAULT_CHARSET
@@ -384,7 +391,7 @@ object formMain: TformMain
         Left = 306
         Top = 27
         Width = 231
-        Height = 459
+        Height = 470
         Legend.Visible = False
         Title.Text.Strings = (
           'TChart')
@@ -392,18 +399,17 @@ object formMain: TformMain
         DepthAxis.Automatic = False
         DepthAxis.AutomaticMaximum = False
         DepthAxis.AutomaticMinimum = False
-        DepthAxis.Maximum = 2.149999999999997000
-        DepthAxis.Minimum = 1.150000000000002000
+        DepthAxis.Maximum = 0.500000000000079400
+        DepthAxis.Minimum = -0.499999999999913600
         DepthTopAxis.Automatic = False
         DepthTopAxis.AutomaticMaximum = False
         DepthTopAxis.AutomaticMinimum = False
-        DepthTopAxis.Maximum = 2.149999999999997000
-        DepthTopAxis.Minimum = 1.150000000000002000
+        DepthTopAxis.Maximum = 0.500000000000079400
+        DepthTopAxis.Minimum = -0.499999999999913600
         LeftAxis.Automatic = False
         LeftAxis.AutomaticMaximum = False
         LeftAxis.AutomaticMinimum = False
-        LeftAxis.Maximum = 265.000000000000000000
-        LeftAxis.Minimum = 165.000000000000000000
+        LeftAxis.Maximum = 100.000000000000000000
         RightAxis.Automatic = False
         RightAxis.AutomaticMaximum = False
         RightAxis.AutomaticMinimum = False
@@ -412,6 +418,12 @@ object formMain: TformMain
         BevelOuter = bvNone
         Color = clWhite
         TabOrder = 1
+        ExplicitHeight = 459
+        PrintMargins = (
+          36
+          15
+          36
+          15)
         object Series1: TFastLineSeries
           Marks.Arrow.Visible = True
           Marks.Callout.Brush.Color = clBlack
@@ -531,8 +543,8 @@ object formMain: TformMain
     end
   end
   object MainMenu1: TMainMenu
-    Left = 736
-    Top = 440
+    Left = 432
+    Top = 648
     object File1: TMenuItem
       Caption = 'File'
       ShortCut = 49222
@@ -680,15 +692,23 @@ object formMain: TformMain
     IPVersion = Id_IPv4
     Port = 16209
     ReadTimeout = 0
-    Left = 697
-    Top = 440
+    Left = 385
+    Top = 648
   end
   object PopupMenu1: TPopupMenu
-    Left = 648
-    Top = 440
+    Left = 328
+    Top = 648
     object Refresh1: TMenuItem
       Caption = 'Refresh'
       OnClick = Refresh1Click
     end
+  end
+  object IdTCPServerUpdate: TIdTCPServer
+    Active = True
+    Bindings = <>
+    DefaultPort = 13550
+    OnExecute = IdTCPServerUpdateExecute
+    Left = 240
+    Top = 648
   end
 end

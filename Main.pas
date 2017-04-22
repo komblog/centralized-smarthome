@@ -8,7 +8,8 @@ uses
   NxPropertyItems, NxPropertyItemClasses, NxScrollControl, NxInspector,
   NxColumns, NxColumnClasses, NxCustomGridControl, NxCustomGrid, NxGrid,
   TeEngine, Series, TeeProcs, Chart, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, idSync;
+  IdTCPConnection, IdTCPClient, idSync, IdContext, IdCustomTCPServer,
+  IdTCPServer;
 
 type
   TReadingThread = class(TThread)
@@ -20,9 +21,8 @@ type
   end;
 
   TLog = class(TIdSync)
-  protected
-    FMsg: String;
-    procedure DoSynchronize; override;
+  protected FMsg: String;
+  procedure DoSynchronize; override;
   public
     constructor Create(const AMsg: String);
     class procedure AddMsg(const AMsg: String);
@@ -117,6 +117,7 @@ type
     LimitUsage1: TMenuItem;
     NxTextColumn11: TNxTextColumn;
     AddObject1: TMenuItem;
+    IdTCPServerUpdate: TIdTCPServer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
@@ -138,6 +139,7 @@ type
     procedure LimitUsage1Click(Sender: TObject);
     procedure Rule1Click(Sender: TObject);
     procedure AddObject1Click(Sender: TObject);
+    procedure IdTCPServerUpdateExecute(AContext: TIdContext);
   private
     procedure UpdateObject(iObjectID, iStatus, iPower: Integer);
     procedure InsertIntoLog(iObjectID, iStatus, iPower: Integer);
@@ -178,30 +180,31 @@ procedure TLog.DoSynchronize;
 var
   s, sObjectId, sStatus, sPower: string;
   iBaris, iMaxPower, iObjUsrID: Integer;
+  sRcvObj_id, sRcvStatus, sRcvPower : string;
 begin
   s := FMsg;
   if s = 'OK' then
   begin
     formObjectSimulatorIPAddress.btnConnect.Caption := 'Disconnect';
-
-    if formLogin.__iLevel = 0 then
-    begin
-      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT', [],
-        dtModul.sqlQuery2);
-    end
-    else
-    begin
-      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT'#13 +
-          'WHERE OBJ_USR_ID = %d', [formLogin.__iUserId], dtModul.sqlQuery2);
-    end;
-    dtModul.sqlQuery2.First;
-    while not dtModul.sqlQuery2.Eof do
-    begin
-      formMain.IdTCPClient1.Socket.WriteLn
-        ('@' + dtModul.sqlQuery2.Fields[0].AsString + '$' +
-          dtModul.sqlQuery2.Fields[1].AsString);
-      dtModul.sqlQuery2.Next;
-    end;
+//kode dibawah digunakan apabila update status dari objek ke BS sudah selesai
+//    if formLogin.__iLevel = 0 then
+//    begin
+//      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT', [],
+//        dtModul.sqlQuery2);
+//    end
+//    else
+//    begin
+//      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT'#13 +
+//          'WHERE OBJ_USR_ID = %d', [formLogin.__iUserId], dtModul.sqlQuery2);
+//    end;
+//    dtModul.sqlQuery2.First;
+//    while not dtModul.sqlQuery2.Eof do
+//    begin
+//      formMain.IdTCPClient1.Socket.WriteLn
+//        ('@' + dtModul.sqlQuery2.Fields[0].AsString + '$' +
+//          dtModul.sqlQuery2.Fields[1].AsString);
+//      dtModul.sqlQuery2.Next;
+//    end;
 
   end
   else
@@ -553,6 +556,7 @@ end;
 procedure TformMain.FormShow(Sender: TObject);
 begin
   formLogin.ShowModal;
+  IdTCPServerUpdate.DefaultPort := 13550;
 end;
 
 procedure TformMain.IdTCPClient1Connected(Sender: TObject);
@@ -568,6 +572,25 @@ begin
     rt.WaitFor;
     FreeAndNil(rt);
   end;
+end;
+
+procedure TformMain.IdTCPServerUpdateExecute(AContext: TIdContext);
+var
+  uMsg : string;
+  sIdObjek, sStatusObjek : string;
+begin
+  uMsg := AContext.Connection.IOHandler.ReadLn;
+  sIdObjek := Copy( uMsg, pos('!', uMsg) + 1, pos('@',uMsg) - (pos('!',uMsg) + 1));
+  sStatusObjek := Copy(uMsg, pos('@', uMsg) + 1, MaxInt);
+
+  dtModul.ExecSQL('UPDATE OBJECT'#13 +
+                  'SET'#13 +
+                  'OBJ_STATUS = %d'#13 +
+                  'WHERE OBJ_ID = %d',
+                  [StrToInt(sStatusObjek), StrToInt(sIdObjek)],
+                  dtModul.sqlQuery1);
+  All1Click(nil);
+
 end;
 
 procedure TformMain.LimitUsage1Click(Sender: TObject);
