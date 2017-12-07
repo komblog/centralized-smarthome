@@ -91,7 +91,7 @@ object formMain: TformMain
       ProgressStyle = psSolid
     end
     object NxTextColumn3: TNxTextColumn
-      DefaultWidth = 46
+      DefaultWidth = 130
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -103,21 +103,7 @@ object formMain: TformMain
       ParentFont = False
       Position = 4
       SortType = stAlphabetic
-      Width = 46
-    end
-    object NxTextColumn5: TNxTextColumn
-      DefaultWidth = 84
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      Header.Caption = 'IP'
-      Header.Alignment = taCenter
-      ParentFont = False
-      Position = 5
-      SortType = stAlphabetic
-      Width = 84
+      Width = 130
     end
     object NxTextColumn4: TNxTextColumn
       Font.Charset = DEFAULT_CHARSET
@@ -129,7 +115,7 @@ object formMain: TformMain
       Header.Alignment = taCenter
       Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
       ParentFont = False
-      Position = 6
+      Position = 5
       SortType = stAlphabetic
     end
   end
