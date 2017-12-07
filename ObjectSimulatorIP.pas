@@ -20,7 +20,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    __bConnect : boolean;
+    __bConnect: boolean;
   end;
 
 var
@@ -29,37 +29,38 @@ var
 implementation
 
 uses
-     Main, Login;
-
+  Main, Login;
 {$R *.dfm}
 
 procedure TformObjectSimulatorIPAddress.btnConnectClick(Sender: TObject);
 begin
-     formMain.IdTCPClient1.Port := StrToInt(edPort.Text);
-     if not __bConnect then
-     begin
-          formMain.IdTCPClient1.Host := trim( edIP.Text );
-          try
-             formMain.IdTCPClient1.Connect;
-             formMain.IdTCPClient1.Socket.WriteLn('!CON'+'@'+IntToStr(formLogin.__iUserID));
-             __bConnect := True;
-          except
-                Application.MessageBox( 'Can not connect to Object Simulator!',
-                                        'Error', MB_OK + MB_ICONSTOP );
-                exit;
-          end;
-     end
-     else
-     begin
-          formMain.IdTCPClient1.Disconnect;
-          btnConnect.Caption := 'Connect';
-          __bConnect := False;
-     end;
+  formMain.IdTCPClient1.Port := StrToInt(edPort.Text);
+  if not __bConnect then
+  begin
+    formMain.IdTCPClient1.Host := trim(edIP.Text);
+    try
+      formMain.IdTCPClient1.Connect;
+      formMain.IdTCPClient1.Socket.WriteLn
+        ('!CON' + '@' + IntToStr(formLogin.__iUserID));
+      __bConnect := True;
+    except
+      Application.MessageBox('Can not connect to Object Simulator!', 'Error',
+        MB_OK + MB_ICONSTOP);
+      exit;
+    end;
+  end
+  else
+  begin
+    formMain.IdTCPClient1.Socket.WriteLn('END');
+    formMain.IdTCPClient1.Disconnect;
+    btnConnect.Caption := 'Connect';
+    __bConnect := False;
+  end;
 end;
 
 procedure TformObjectSimulatorIPAddress.NxButton1Click(Sender: TObject);
 begin
-     Close;
+  Close;
 end;
 
 end.

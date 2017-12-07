@@ -3,7 +3,7 @@ object formUbahRule: TformUbahRule
   Top = 0
   Caption = 'Ubah Rule'
   ClientHeight = 202
-  ClientWidth = 331
+  ClientWidth = 264
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -48,7 +48,6 @@ object formUbahRule: TformUbahRule
     Width = 145
     Height = 21
     TabOrder = 0
-    OnChange = cbObjInChange
   end
   object editObjInStatus: TEdit
     Left = 104
@@ -63,7 +62,6 @@ object formUbahRule: TformUbahRule
     Width = 145
     Height = 21
     TabOrder = 2
-    OnChange = cbObjOutChange
   end
   object editObjOutStatus: TEdit
     Left = 104
@@ -82,28 +80,12 @@ object formUbahRule: TformUbahRule
     OnClick = tombolCancelClick
   end
   object tombolOk: TButton
-    Left = 199
+    Left = 206
     Top = 169
     Width = 50
     Height = 25
     Caption = 'OK'
     TabOrder = 5
     OnClick = tombolOkClick
-  end
-  object editIPObj_in: TEdit
-    Left = 259
-    Top = 8
-    Width = 64
-    Height = 21
-    TabOrder = 6
-    Visible = False
-  end
-  object editIPObj_Out: TEdit
-    Left = 259
-    Top = 93
-    Width = 64
-    Height = 21
-    TabOrder = 7
-    Visible = False
   end
 end

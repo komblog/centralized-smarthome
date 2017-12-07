@@ -11,7 +11,8 @@ uses
   ListRule in 'ListRule.pas' {formListRule},
   AddRule in 'AddRule.pas' {formAddRule},
   UbahRule in 'UbahRule.pas' {formUbahRule},
-  AddObject in 'AddObject.pas' {formAddObject};
+  AddObject in 'AddObject.pas' {formAddObject},
+  kodeText in 'kodeText.pas' {formKode};
 
 {$R *.res}
 
@@ -28,5 +29,6 @@ begin
   Application.CreateForm(TformAddRule, formAddRule);
   Application.CreateForm(TformUbahRule, formUbahRule);
   Application.CreateForm(TformAddObject, formAddObject);
+  Application.CreateForm(TformKode, formKode);
   Application.Run;
 end.

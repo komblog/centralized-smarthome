@@ -75,6 +75,9 @@
 			<DCCReference Include="AddObject.pas">
 				<Form>formAddObject</Form>
 			</DCCReference>
+			<DCCReference Include="kodeText.pas">
+				<Form>formKode</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

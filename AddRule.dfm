@@ -3,7 +3,7 @@ object formAddRule: TformAddRule
   Top = 0
   Caption = 'Tambah Rule'
   ClientHeight = 202
-  ClientWidth = 331
+  ClientWidth = 263
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -50,7 +50,6 @@ object formAddRule: TformAddRule
     Height = 21
     Style = csDropDownList
     TabOrder = 0
-    OnChange = cbObjInChange
   end
   object editObjInStatus: TEdit
     Left = 104
@@ -66,7 +65,6 @@ object formAddRule: TformAddRule
     Height = 21
     Style = csDropDownList
     TabOrder = 2
-    OnChange = cbObjOutChange
   end
   object editObjOutStatus: TEdit
     Left = 104
@@ -92,21 +90,5 @@ object formAddRule: TformAddRule
     Caption = 'OK'
     TabOrder = 5
     OnClick = tombolOkClick
-  end
-  object ipObj_in: TEdit
-    Left = 266
-    Top = 8
-    Width = 57
-    Height = 21
-    TabOrder = 6
-    Visible = False
-  end
-  object ipObj_out: TEdit
-    Left = 266
-    Top = 93
-    Width = 57
-    Height = 21
-    TabOrder = 7
-    Visible = False
   end
 end

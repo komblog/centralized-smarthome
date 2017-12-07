@@ -30,7 +30,6 @@ object formMain: TformMain
     Width = 773
     Height = 19
     Panels = <>
-    ExplicitTop = 691
   end
   object NxPanelLeft: TNxPanel
     Left = 0
@@ -45,7 +44,6 @@ object formMain: TformMain
     PanelBorders = []
     ParentColor = False
     TabOrder = 1
-    ExplicitHeight = 666
     object TreeView1: TTreeView
       Left = 0
       Top = 0
@@ -56,7 +54,6 @@ object formMain: TformMain
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnDblClick = TreeView1DblClick
-      ExplicitHeight = 508
     end
     object NxFlipPanel1: TNxFlipPanel
       Left = 0
@@ -96,7 +93,6 @@ object formMain: TformMain
       HeaderFont.Height = -11
       HeaderFont.Name = 'Tahoma'
       HeaderFont.Style = []
-      ExplicitTop = 508
       FullHeight = 0
       object NextInspector1: TNextInspector
         Left = 0
@@ -157,7 +153,6 @@ object formMain: TformMain
     PanelBorders = []
     ParentColor = False
     TabOrder = 2
-    ExplicitHeight = 666
     object NxSplitter2: TNxSplitter
       Left = 0
       Top = 177
@@ -249,20 +244,8 @@ object formMain: TformMain
           Position = 3
           SortType = stAlphabetic
         end
-        object NxTextColumn11: TNxTextColumn
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Header.Caption = 'IP'
-          Header.Alignment = taCenter
-          ParentFont = False
-          Position = 4
-          SortType = stAlphabetic
-        end
         object NxTextColumn4: TNxTextColumn
-          DefaultWidth = 86
+          DefaultWidth = 166
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -272,9 +255,9 @@ object formMain: TformMain
           Header.Alignment = taCenter
           Options = [coAutoSize, coCanClick, coCanInput, coCanSort, coPublicUsing, coShowTextFitHint]
           ParentFont = False
-          Position = 5
+          Position = 4
           SortType = stAlphabetic
-          Width = 86
+          Width = 166
         end
       end
     end
@@ -292,10 +275,9 @@ object formMain: TformMain
       HeaderFont.Style = []
       ParentHeaderFont = False
       TabOrder = 1
-      ExplicitHeight = 488
       FullWidth = 539
       object NxSplitter3: TNxSplitter
-        Left = 305
+        Left = 535
         Top = 27
         Width = 1
         Height = 470
@@ -305,7 +287,7 @@ object formMain: TformMain
       object NextGridLog: TNextGrid
         Left = 0
         Top = 27
-        Width = 305
+        Width = 535
         Height = 470
         Align = alLeft
         HeaderStyle = hsVista
@@ -313,7 +295,6 @@ object formMain: TformMain
         PopupMenu = PopupMenu1
         TabOrder = 0
         TabStop = True
-        ExplicitHeight = 459
         object NxTextColumn5: TNxIncrementColumn
           DefaultWidth = 37
           Font.Charset = DEFAULT_CHARSET
@@ -344,7 +325,7 @@ object formMain: TformMain
           Width = 57
         end
         object NxTextColumn6: TNxTextColumn
-          DefaultWidth = 104
+          DefaultWidth = 200
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -355,10 +336,10 @@ object formMain: TformMain
           ParentFont = False
           Position = 2
           SortType = stAlphabetic
-          Width = 104
+          Width = 200
         end
         object NxTextColumn7: TNxTextColumn
-          DefaultWidth = 49
+          DefaultWidth = 100
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -369,7 +350,7 @@ object formMain: TformMain
           ParentFont = False
           Position = 3
           SortType = stAlphabetic
-          Width = 49
+          Width = 100
         end
         object NxTextColumn10: TNxTextColumn
           DefaultWidth = 56
@@ -384,58 +365,7 @@ object formMain: TformMain
           ParentFont = False
           Position = 4
           SortType = stAlphabetic
-          Width = 56
-        end
-      end
-      object Chart1: TChart
-        Left = 306
-        Top = 27
-        Width = 231
-        Height = 470
-        Legend.Visible = False
-        Title.Text.Strings = (
-          'TChart')
-        Title.Visible = False
-        DepthAxis.Automatic = False
-        DepthAxis.AutomaticMaximum = False
-        DepthAxis.AutomaticMinimum = False
-        DepthAxis.Maximum = 0.500000000000079400
-        DepthAxis.Minimum = -0.499999999999913600
-        DepthTopAxis.Automatic = False
-        DepthTopAxis.AutomaticMaximum = False
-        DepthTopAxis.AutomaticMinimum = False
-        DepthTopAxis.Maximum = 0.500000000000079400
-        DepthTopAxis.Minimum = -0.499999999999913600
-        LeftAxis.Automatic = False
-        LeftAxis.AutomaticMaximum = False
-        LeftAxis.AutomaticMinimum = False
-        LeftAxis.Maximum = 100.000000000000000000
-        RightAxis.Automatic = False
-        RightAxis.AutomaticMaximum = False
-        RightAxis.AutomaticMinimum = False
-        View3D = False
-        Align = alClient
-        BevelOuter = bvNone
-        Color = clWhite
-        TabOrder = 1
-        ExplicitHeight = 459
-        PrintMargins = (
-          36
-          15
-          36
-          15)
-        object Series1: TFastLineSeries
-          Marks.Arrow.Visible = True
-          Marks.Callout.Brush.Color = clBlack
-          Marks.Callout.Arrow.Visible = True
-          Marks.Style = smsValue
-          Marks.Visible = True
-          SeriesColor = clBlue
-          LinePen.Color = clBlue
-          XValues.Name = 'X'
-          XValues.Order = loAscending
-          YValues.Name = 'Y'
-          YValues.Order = loNone
+          Width = 139
         end
       end
     end

@@ -21,8 +21,9 @@ type
   end;
 
   TLog = class(TIdSync)
-  protected FMsg: String;
-  procedure DoSynchronize; override;
+  protected
+    FMsg: String;
+    procedure DoSynchronize; override;
   public
     constructor Create(const AMsg: String);
     class procedure AddMsg(const AMsg: String);
@@ -71,8 +72,6 @@ type
     NextGridLog: TNextGrid;
     NxTextColumn6: TNxTextColumn;
     NxTextColumn7: TNxTextColumn;
-    Chart1: TChart;
-    Series1: TFastLineSeries;
     NxSplitter3: TNxSplitter;
     Login1: TMenuItem;
     Logout1: TMenuItem;
@@ -115,7 +114,6 @@ type
     NxTextColumn10: TNxTextColumn;
     N5: TMenuItem;
     LimitUsage1: TMenuItem;
-    NxTextColumn11: TNxTextColumn;
     AddObject1: TMenuItem;
     IdTCPServerUpdate: TIdTCPServer;
     procedure FormCreate(Sender: TObject);
@@ -155,7 +153,7 @@ type
     procedure GetUserData(iUsrID: Integer);
     procedure GetSummary(iUsrID: Integer);
     procedure ClearnextInspector;
-    procedure UpdateChart;
+    //procedure UpdateChart;
 
   end;
 
@@ -180,31 +178,31 @@ procedure TLog.DoSynchronize;
 var
   s, sObjectId, sStatus, sPower: string;
   iBaris, iMaxPower, iObjUsrID: Integer;
-  sRcvObj_id, sRcvStatus, sRcvPower : string;
+  sRcvObj_id, sRcvStatus, sRcvPower: string;
 begin
   s := FMsg;
   if s = 'OK' then
   begin
     formObjectSimulatorIPAddress.btnConnect.Caption := 'Disconnect';
-//kode dibawah digunakan apabila update status dari objek ke BS sudah selesai
-//    if formLogin.__iLevel = 0 then
-//    begin
-//      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT', [],
-//        dtModul.sqlQuery2);
-//    end
-//    else
-//    begin
-//      dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT'#13 +
-//          'WHERE OBJ_USR_ID = %d', [formLogin.__iUserId], dtModul.sqlQuery2);
-//    end;
-//    dtModul.sqlQuery2.First;
-//    while not dtModul.sqlQuery2.Eof do
-//    begin
-//      formMain.IdTCPClient1.Socket.WriteLn
-//        ('@' + dtModul.sqlQuery2.Fields[0].AsString + '$' +
-//          dtModul.sqlQuery2.Fields[1].AsString);
-//      dtModul.sqlQuery2.Next;
-//    end;
+    // kode dibawah digunakan apabila update status dari objek ke BS sudah selesai
+    // if formLogin.__iLevel = 0 then
+    // begin
+    // dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT', [],
+    // dtModul.sqlQuery2);
+    // end
+    // else
+    // begin
+    // dtModul.ExecSQL('SELECT OBJ_ID, OBJ_STATUS'#13 + 'FROM OBJECT'#13 +
+    // 'WHERE OBJ_USR_ID = %d', [formLogin.__iUserId], dtModul.sqlQuery2);
+    // end;
+    // dtModul.sqlQuery2.First;
+    // while not dtModul.sqlQuery2.Eof do
+    // begin
+    // formMain.IdTCPClient1.Socket.WriteLn
+    // ('@' + dtModul.sqlQuery2.Fields[0].AsString + '$' +
+    // dtModul.sqlQuery2.Fields[1].AsString);
+    // dtModul.sqlQuery2.Next;
+    // end;
 
   end
   else
@@ -229,37 +227,37 @@ begin
       end;
     end;
 
-    dtModul.ExecSQL('SELECT max_power.max_power FROM max_power'#13 +
-        'JOIN user'#13 + 'ON max_power.cluster = user.usr_cluster'#13 +
-        'JOIN object'#13 + 'ON user.usr_id = object.obj_usr_id'#13 +
-        'WHERE object.obj_id = %d', [StrToInt(sObjectId)], dtModul.sqlQuery1);
-    iMaxPower := dtModul.sqlQuery1.Fields[0].AsInteger;
-
-    dtModul.ExecSQL('SELECT OBJ_USR_ID FROM OBJECT'#13 + 'WHERE OBJ_ID = %d',
-      [StrToInt(sObjectId)], dtModul.sqlQuery1);
-    iObjUsrID := dtModul.sqlQuery1.Fields[0].AsInteger;
-
-    dtModul.ExecSQL('SELECT SUM(OBJ_POWER) FROM OBJECT'#13 +
-        'WHERE OBJ_USR_ID = %d'#13 + 'AND OBJ_ID != %d',
-      [iObjUsrID, StrToInt(sObjectId)], dtModul.sqlQuery1);
-
-    if iMaxPower < (dtModul.sqlQuery1.Fields[0].AsInteger + StrToInt(sPower))
-      then
-    begin
-      ShowMessage('The total power is exceed the limit!');
-      dtModul.ExecSQL('SELECT OBJ_STATUS FROM OBJECT'#13 + 'WHERE OBJ_ID = %d',
-        [StrToInt(sObjectId)], dtModul.sqlQuery1);
-      formMain.IdTCPClient1.Socket.WriteLn
-        ('#' + sObjectId + '*' + dtModul.sqlQuery1.Fields[0].AsString);
-      Exit;
-    end
-    else
-    begin
-      formMain.UpdateObject(StrToInt(sObjectId), StrToInt(sStatus), StrToInt
-          (sPower));
-      formMain.InsertIntoLog(StrToInt(sObjectId), StrToInt(sStatus), StrToInt
-          (sPower));
-    end;
+    // dtModul.ExecSQL('SELECT max_power.max_power FROM max_power'#13 +
+    // 'JOIN user'#13 + 'ON max_power.cluster = user.usr_cluster'#13 +
+    // 'JOIN object'#13 + 'ON user.usr_id = object.obj_usr_id'#13 +
+    // 'WHERE object.obj_id = %d', [StrToInt(sObjectId)], dtModul.sqlQuery1);
+    // iMaxPower := dtModul.sqlQuery1.Fields[0].AsInteger;
+    //
+    // dtModul.ExecSQL('SELECT OBJ_USR_ID FROM OBJECT'#13 + 'WHERE OBJ_ID = %d',
+    // [StrToInt(sObjectId)], dtModul.sqlQuery1);
+    // iObjUsrID := dtModul.sqlQuery1.Fields[0].AsInteger;
+    //
+    // dtModul.ExecSQL('SELECT SUM(OBJ_POWER) FROM OBJECT'#13 +
+    // 'WHERE OBJ_USR_ID = %d'#13 + 'AND OBJ_ID != %d',
+    // [iObjUsrID, StrToInt(sObjectId)], dtModul.sqlQuery1);
+    //
+    // if iMaxPower < (dtModul.sqlQuery1.Fields[0].AsInteger + StrToInt(sPower))
+    // then
+    // begin
+    // ShowMessage('The total power is exceed the limit!');
+    // dtModul.ExecSQL('SELECT OBJ_STATUS FROM OBJECT'#13 + 'WHERE OBJ_ID = %d',
+    // [StrToInt(sObjectId)], dtModul.sqlQuery1);
+    // formMain.IdTCPClient1.Socket.WriteLn
+    // ('#' + sObjectId + '*' + dtModul.sqlQuery1.Fields[0].AsString);
+    // Exit;
+    // end
+    // else
+    // begin
+    // formMain.UpdateObject(StrToInt(sObjectId), StrToInt(sStatus), StrToInt
+    // (sPower));
+    // formMain.InsertIntoLog(StrToInt(sObjectId), StrToInt(sStatus), StrToInt
+    // (sPower));
+    // end;
     if formLogin.__iLevel = 0 then
     begin
       formMain.UpdateNextGridObject(0, 0);
@@ -307,20 +305,20 @@ begin
   if iObjID <> 0 then
   begin
     dtModul.ExecSQL(
-      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS, OBJ_IP'#13 +
+      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS'#13 +
         'FROM OBJECT'#13 + 'WHERE OBJ_ID = %d', [iObjID], dtModul.sqlQuery2);
   end
   else if iUsrID <> 0 then
   begin
     dtModul.ExecSQL(
-      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS, OBJ_IP'#13 +
+      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS'#13 +
         'FROM OBJECT'#13 + 'WHERE OBJ_USR_ID = %d', [iUsrID],
       dtModul.sqlQuery2);
   end
   else
   begin
     dtModul.ExecSQL(
-      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS, OBJ_IP'#13 +
+      'SELECT OBJ_ID, OBJ_NAME, OBJ_STATUS, OBJ_POWER, OBJ_CLASS'#13 +
         'FROM OBJECT', [], dtModul.sqlQuery2);
   end;
 
@@ -338,8 +336,6 @@ begin
       dtModul.sqlQuery2.Fields[2].AsInteger;
     formMain.NextGridObject.Cell[3, iBaris].AsInteger :=
       dtModul.sqlQuery2.Fields[3].AsInteger;
-    formMain.NextGridObject.Cell[4, iBaris].AsString := dtModul.sqlQuery2.Fields
-      [5].AsString;
     dtModul.sqlQuery2.Next;
     Inc(iBaris);
   end;
@@ -576,19 +572,21 @@ end;
 
 procedure TformMain.IdTCPServerUpdateExecute(AContext: TIdContext);
 var
-  uMsg : string;
-  sIdObjek, sStatusObjek : string;
+  uMsg: string;
+  sIdObjek, sStatusObjek, sPower: string;
 begin
   uMsg := AContext.Connection.IOHandler.ReadLn;
-  sIdObjek := Copy( uMsg, pos('!', uMsg) + 1, pos('@',uMsg) - (pos('!',uMsg) + 1));
-  sStatusObjek := Copy(uMsg, pos('@', uMsg) + 1, MaxInt);
+  sIdObjek := Copy(uMsg, pos('!', uMsg) + 1, pos('@', uMsg) -
+      (pos('!', uMsg) + 1));
+  sStatusObjek := Copy(uMsg, pos('@', uMsg) + 1, pos('#', uMsg) -
+      (pos('@', uMsg) + 1));
+  sPower := Copy(uMsg, pos('#', uMsg) + 1, MaxInt);
+  dtModul.ExecSQL('UPDATE OBJECT'#13 + 'SET'#13 + 'OBJ_STATUS = %d,'#13 +
+      'OBJ_POWER = %d'#13 + 'WHERE OBJ_ID = %d', [StrToInt(sStatusObjek),
+    StrToInt(sPower), StrToInt(sIdObjek)], dtModul.sqlQuery1);
 
-  dtModul.ExecSQL('UPDATE OBJECT'#13 +
-                  'SET'#13 +
-                  'OBJ_STATUS = %d'#13 +
-                  'WHERE OBJ_ID = %d',
-                  [StrToInt(sStatusObjek), StrToInt(sIdObjek)],
-                  dtModul.sqlQuery1);
+  formMain.InsertIntoLog(StrToInt(sIdObjek), StrToInt(sStatusObjek), StrToInt
+      (sPower));
   All1Click(nil);
 
 end;
@@ -627,20 +625,20 @@ var
 begin
   UpdateNextGridLog(0, NextGridObject.Cell[0, NextGridObject.SelectedRow]
       .AsInteger);
-  UpdateChart;
+  //UpdateChart;
 end;
 
-procedure TformMain.UpdateChart;
-var
-  iBaris: Integer;
-begin
-  Chart1.Series[0].Clear;
-  for iBaris := 0 to NextGridLog.RowCount - 1 do
-  begin
-    Chart1.Series[0].AddXY(NextGridLog.Cell[0, iBaris].AsInteger,
-      NextGridLog.Cell[4, iBaris].AsInteger, '', clBlue);
-  end;
-end;
+//procedure TformMain.UpdateChart;
+//var
+//  iBaris: Integer;
+//begin
+//  Chart1.Series[0].Clear;
+//  for iBaris := 0 to NextGridLog.RowCount - 1 do
+//  begin
+//    Chart1.Series[0].AddXY(NextGridLog.Cell[0, iBaris].AsInteger,
+//      NextGridLog.Cell[4, iBaris].AsInteger, '', clBlue);
+//  end;
+//end;
 
 procedure TformMain.ObjectSimulatorIPAddress1Click(Sender: TObject);
 begin
